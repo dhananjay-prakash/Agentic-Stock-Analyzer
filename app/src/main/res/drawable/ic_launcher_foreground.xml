@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Institutional Shield Emblem -->
+    <path
+        android:fillColor="#1E2C58"
+        android:pathData="M54,26 L78,35 L78,57 C78,71 68,81 54,86 C40,81 30,71 30,57 L30,35 Z" />
+    
+    <!-- Outer Gold Border -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFD700"
+        android:strokeWidth="2.5"
+        android:pathData="M54,26 L78,35 L78,57 C78,71 68,81 54,86 C40,81 30,71 30,57 L30,35 Z" />
+
+    <!-- Bar Chart Elements representing Quant Research -->
+    <!-- Bar 1 -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M40,68 L44,68 L44,56 L40,56 Z" />
+    <!-- Bar 2 -->
+    <path
+        android:fillColor="#00E676"
+        android:pathData="M48,68 L52,68 L52,48 L48,48 Z" />
+    <!-- Bar 3 -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M56,68 L60,68 L60,42 L56,42 Z" />
+    <!-- Bar 4 -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M64,68 L68,68 L68,36 L64,36 Z" />
+
+    <!-- Upward Trend Line with Arrow -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.2"
+        android:pathData="M38,62 L48,52 L56,47 L68,34" />
+    
+    <!-- Arrow Head -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M64,33 L70,33 L69,39 Z" />
+</vector>

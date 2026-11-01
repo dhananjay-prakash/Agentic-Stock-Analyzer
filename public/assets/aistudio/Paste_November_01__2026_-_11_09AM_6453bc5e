@@ -1,0 +1,2384 @@
+# GOOGLE AI STUDIO — MASTER BUILD SPECIFICATION
+
+## LOCAL ANDROID + ONLINE-FIRST + MULTI-AGENT INVESTMENT INTELLIGENCE SYSTEM
+
+---
+
+# LAYER 0 — PROJECT MISSION
+
+Build a **personal institutional-grade Investment Intelligence Android application** for a single user.
+
+The application is intended for personal investment research across:
+
+- Indian equities
+- US equities
+- ETFs
+- Mutual funds
+- Indices
+- Commodities
+- Gold
+- Bonds and yields
+- Currency
+- Macro economics
+- Sectors
+- Global markets
+- Geopolitical events
+- Portfolio risk
+- Valuation
+- Technical analysis
+- Long-term investment decisions
+- Short-term market/trading research
+
+The application must behave like a **multi-agent investment research organization**, not like a generic AI chatbot.
+
+The fundamental philosophy is:
+
+```text
+DATA
+→ VALIDATION
+→ FRESHNESS
+→ EVIDENCE
+→ SPECIALIST ANALYSIS
+→ CROSS-CHECK
+→ CONFLICT DETECTION
+→ DEVIL'S ADVOCATE
+→ RISK
+→ VALUATION
+→ PORTFOLIO FIT
+→ AUDIT
+→ INVESTMENT COMMITTEE
+→ DECISION
+→ MONITORING
+→ RESEARCH AGAIN WHEN CONDITIONS CHANGE
+```
+
+Never:
+
+```text
+LLM opinion
+→
+Investment recommendation
+```
+
+---
+
+# LAYER 1 — TARGET PLATFORM
+
+## Android-first
+
+Build a **native Android application** using:
+
+- Kotlin
+- Jetpack Compose
+- Android standard architecture
+- ViewModel/state management
+- Local persistent storage
+- Android networking
+- Secure Android credential mechanisms
+- Background task mechanisms compatible with Android
+
+Google AI Studio's current Android Build flow generates Kotlin/Jetpack Compose applications and supports physical-device installation/testing.
+
+Do NOT build this as a web-only application.
+
+Do NOT make the Android application dependent on opening a browser.
+
+---
+
+# LAYER 2 — DEPLOYMENT PHILOSOPHY
+
+The application is for **one personal user**.
+
+The user wants to install the application on their own Android phone and use it directly.
+
+The application must NOT require:
+
+- VPS
+- Domain
+- Public IP
+- DNS
+- Reverse proxy
+- Public web server
+- Hosted Node.js backend
+- Hosted PostgreSQL
+- Hosted MongoDB
+- Public REST API owned by this application
+- Cloud Run
+- A permanently running server
+
+The phone itself is the primary application runtime.
+
+---
+
+# LAYER 3 — ONLINE-FIRST LOCAL EXECUTION
+
+The user has an internet connection on the phone.
+
+Therefore the application should be:
+
+## ONLINE-FIRST
+
+not primarily offline.
+
+Internet connectivity should be actively used to retrieve fresh information.
+
+Architecture:
+
+```text
+                    INTERNET
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+   Market Data       News         AI Services
+        │              │              │
+        └──────────────┼──────────────┘
+                       │
+                       ▼
+              ANDROID APPLICATION
+                       │
+                MASTER AGENT
+                       │
+               RESEARCH PLANNER
+                       │
+              DATA CONTROL TOWER
+                       │
+       ┌───────────────┼────────────────┐
+       │               │                │
+   Specialist       Evidence        Portfolio
+     Agents          Engine           Engine
+       │               │                │
+       └───────────────┼────────────────┘
+                       │
+                CONFLICT ENGINE
+                       │
+                  VALUATION
+                       │
+                     RISK
+                       │
+              DEVIL'S ADVOCATE
+                       │
+                  AUDITOR
+                       │
+            INVESTMENT COMMITTEE
+                       │
+                    DECISION
+```
+
+---
+
+# LAYER 4 — IMPORTANT GOOGLE AI STUDIO CONSTRAINT
+
+Do not assume the Android project has a traditional server-side runtime.
+
+Google's current documentation states that AI Studio Android apps are client-side applications, while server-side runtime features such as server-side secrets and certain integrations are available for web apps. For Android, Google provides Firebase AI Logic and App Check for secure Gemini access without embedding a raw API key in the APK.
+
+Therefore design the application around:
+
+```text
+ANDROID LOCAL RUNTIME
++
+SECURE GEMINI ACCESS
++
+DIRECT EXTERNAL DATA PROVIDERS
++
+LOCAL DATABASE
++
+LOCAL AGENT ORCHESTRATION
+```
+
+Do not create an unnecessary custom backend.
+
+---
+
+# LAYER 5 — APPLICATION ARCHITECTURE
+
+Use clear separation of concerns.
+
+```text
+UI LAYER
+    ↓
+APPLICATION / ORCHESTRATION LAYER
+    ↓
+AGENT LAYER
+    ↓
+DATA CONTROL LAYER
+    ↓
+DATA PROVIDER LAYER
+    ↓
+LOCAL STORAGE
+```
+
+More specifically:
+
+```text
+Jetpack Compose UI
+        ↓
+ViewModels
+        ↓
+Master Agent
+        ↓
+Research Planner
+        ↓
+Agent Orchestrator
+        ↓
+Data Control Tower
+        ↓
+Freshness + Validation
+        ↓
+Specialist Agents
+        ↓
+Evidence / Conflict / Risk / Valuation
+        ↓
+Investment Committee
+```
+
+---
+
+# LAYER 6 — MASTER AGENT
+
+Create a dedicated Master Agent orchestration component.
+
+Responsibilities:
+
+- Understand the user's question
+- Identify research scope
+- Call Research Planner
+- Determine required agents
+- Execute independent agents in parallel where possible
+- Manage dependencies
+- Collect results
+- Detect missing information
+- Trigger additional research
+- Send validated research package to Investment Committee
+- Return final decision
+
+The Master Agent must NOT invent financial facts.
+
+---
+
+# LAYER 7 — RESEARCH PLANNER
+
+The Research Planner determines exactly what needs to be investigated.
+
+Example:
+
+User:
+
+> Should I buy NVDA today?
+
+Planner:
+
+```text
+Market Data
+Fundamentals
+Recent News
+Earnings
+Valuation
+Technical
+Sector
+Macro
+Risk
+Portfolio Exposure
+Devil's Advocate
+Audit
+Investment Committee
+```
+
+If the question is:
+
+> Compare VOO vs QQQM
+
+Planner should instead request:
+
+```text
+ETF Data
+Holdings
+Look-through exposure
+Valuation
+Historical performance
+Risk
+Drawdown
+Sector exposure
+Overlap
+Portfolio fit
+```
+
+Research must be adaptive.
+
+Do not execute every agent for every query.
+
+---
+
+# LAYER 8 — DATA CONTROL TOWER
+
+The Data Control Tower is the central data gateway.
+
+No specialist agent should blindly retrieve and trust raw external data.
+
+Architecture:
+
+```text
+External Source
+      ↓
+Provider Adapter
+      ↓
+Normalization
+      ↓
+Timestamp
+      ↓
+Source Validation
+      ↓
+Freshness Engine
+      ↓
+Quality Engine
+      ↓
+Local Cache
+      ↓
+Agent
+```
+
+The Data Control Tower should maintain a unified representation of financial data regardless of provider.
+
+---
+
+# LAYER 9 — DATA FRESHNESS CONTRACT
+
+Every important data object must contain:
+
+```text
+value
+source
+sourceType
+publishedAt
+effectiveAt
+retrievedAt
+expectedUpdateFrequency
+freshnessPolicy
+freshnessStatus
+sourceReliability
+confidence
+```
+
+Example:
+
+```text
+Symbol: NVDA
+
+Price: $XXX.XX
+
+Source: Market Data Provider
+Retrieved: 2026-11-01 10:20 IST
+Effective: 2026-11-01
+Expected Update: Intraday
+Freshness: LIVE
+Reliability: HIGH
+```
+
+---
+
+# LAYER 10 — FRESHNESS STATES
+
+Implement:
+
+```text
+LIVE
+FRESH
+LATEST_AVAILABLE
+AGING
+STALE
+CURRENT_DATA_UNAVAILABLE
+```
+
+Definitions:
+
+### LIVE
+
+Current/near-current data appropriate for intraday use.
+
+### FRESH
+
+Within the appropriate freshness window.
+
+### LATEST_AVAILABLE
+
+The latest legitimate official publication even if older than 24 hours.
+
+Example:
+
+Quarterly financial statement.
+
+### AGING
+
+Approaching the permitted freshness boundary.
+
+### STALE
+
+Outside the permitted freshness boundary.
+
+### CURRENT DATA UNAVAILABLE
+
+Required information cannot be verified.
+
+---
+
+# LAYER 11 — THE 24-HOUR RULE
+
+The user's requirement is:
+
+> No stale data older than 24 hours.
+
+Implement this intelligently.
+
+Do NOT blindly reject every piece of data older than 24 hours.
+
+Instead use **data-class-specific freshness policies**.
+
+Example:
+
+| Data | Policy |
+|---|---|
+| Intraday stock price | LIVE |
+| Intraday volume | LIVE |
+| Market breadth | Current session |
+| Current news | Preferably minutes/hours |
+| Daily close | Latest trading session |
+| ETF NAV | Latest official |
+| Mutual fund NAV | Latest official |
+| Quarterly earnings | Latest official filing |
+| Annual report | Latest official report |
+| GDP | Latest official release |
+| Inflation | Latest official release |
+| Central bank decision | Latest official decision |
+
+Hard rule:
+
+> Never present stale data as current.
+
+---
+
+# LAYER 12 — CURRENT DATA GATE
+
+Before a current-market recommendation reaches the Investment Committee:
+
+```text
+Is required data available?
+        │
+       YES
+        ↓
+Is it within its allowed freshness policy?
+        │
+       YES
+        ↓
+Is source reliable?
+        │
+       YES
+        ↓
+Use data
+```
+
+If any critical requirement fails:
+
+```text
+CURRENT DATA UNAVAILABLE
+```
+
+Do not silently use old cached information.
+
+---
+
+# LAYER 13 — SOURCE HIERARCHY
+
+Prioritize:
+
+```text
+TIER 1
+Official primary sources
+
+TIER 2
+Licensed / institutional market data
+
+TIER 3
+Reputable financial media
+
+TIER 4
+Secondary sources
+```
+
+Examples of primary-source categories:
+
+- Exchange data
+- Company filings
+- Regulatory filings
+- Fund issuer information
+- Official central-bank releases
+- Government economic data
+
+---
+
+# LAYER 14 — DATA PROVIDER ABSTRACTION
+
+Create interfaces for:
+
+```text
+MarketDataProvider
+NewsProvider
+FundamentalDataProvider
+ETFDataProvider
+MutualFundDataProvider
+MacroDataProvider
+FXProvider
+CommodityProvider
+YieldProvider
+GeopoliticalDataProvider
+```
+
+The application must not hard-code its intelligence logic around one provider.
+
+Provider implementations can be replaced independently.
+
+---
+
+# LAYER 15 — PROVIDER FAILOVER
+
+Use:
+
+```text
+Primary Provider
+      ↓
+Validation
+      ↓
+Success?
+  YES → Continue
+
+  NO
+      ↓
+Secondary Provider
+      ↓
+Validation
+      ↓
+Success?
+  YES → Continue
+
+  NO
+      ↓
+CURRENT DATA UNAVAILABLE
+```
+
+Never choose a secondary provider merely because it returns a number.
+
+The number must satisfy:
+
+- Correctness
+- Source reliability
+- Freshness
+- Data-type requirements
+
+---
+
+# LAYER 16 — MARKET DATA AGENT
+
+Analyze:
+
+- Indian equities
+- US equities
+- ETFs
+- Indices
+- Futures
+- Options
+- Commodities
+- Gold
+- FX
+- Bonds
+- Treasury yields
+- Market breadth
+
+Metrics:
+
+- LTP
+- OHLC
+- Volume
+- Bid/ask
+- 52-week high/low
+- Returns
+- Volatility
+- ATR
+- Corporate actions
+- Trading status
+
+For intraday decisions, current data is mandatory.
+
+---
+
+# LAYER 17 — NEWS & EVENT AGENT
+
+Analyze:
+
+- Company news
+- Earnings
+- Guidance
+- Analyst revisions
+- M&A
+- Regulatory events
+- Sector developments
+- Macro releases
+- Central bank decisions
+- Geopolitical events
+
+Pipeline:
+
+```text
+News
+ ↓
+Deduplicate
+ ↓
+Source credibility
+ ↓
+Event classification
+ ↓
+Positive / Negative / Neutral
+ ↓
+Magnitude
+ ↓
+Duration
+ ↓
+Affected companies
+ ↓
+Investment impact
+```
+
+---
+
+# LAYER 18 — COMPANY FUNDAMENTAL AGENT
+
+Analyze:
+
+- Revenue
+- EPS
+- Margins
+- Free cash flow
+- ROIC
+- ROE
+- ROCE
+- Debt
+- Cash
+- Net debt
+- Capital allocation
+- Management
+- Competitive advantage
+- Market share
+- Customer concentration
+- Product pipeline
+- Insider activity
+- Earnings quality
+
+Do not allow an LLM to invent missing financial values.
+
+---
+
+# LAYER 19 — ETF INTELLIGENCE AGENT
+
+Analyze:
+
+- Price
+- NAV
+- Premium/discount
+- Holdings
+- Weightings
+- Sector exposure
+- Country exposure
+- Factor exposure
+- Expense ratio
+- AUM
+- Liquidity
+- Bid/ask spread
+- Tracking difference
+- Tracking error
+- Dividend
+- Flows
+- Index methodology
+
+---
+
+# LAYER 20 — ETF LOOK-THROUGH ENGINE
+
+This is mandatory.
+
+If the user owns:
+
+```text
+QQQM
+VOO
+SCHG
+NVDA
+MSFT
+GOOGL
+AMZN
+```
+
+the system must calculate effective exposure.
+
+Do not simply say:
+
+> You own 7 securities.
+
+Instead determine:
+
+```text
+Effective Technology Exposure
+Effective Nasdaq Exposure
+Effective Mega-Cap Exposure
+Effective NVDA Exposure
+Effective MSFT Exposure
+Effective GOOGL Exposure
+Effective US Exposure
+Effective Growth Exposure
+```
+
+This is essential for portfolio-aware decisions.
+
+---
+
+# LAYER 21 — MUTUAL FUND AGENT
+
+Analyze:
+
+- NAV
+- AUM
+- Expense ratio
+- Holdings
+- Concentration
+- Turnover
+- Manager
+- Benchmark
+- Category
+- Tracking error
+- Alpha
+- Beta
+- Sharpe
+- Sortino
+- Drawdown
+- Rolling returns
+- SIP returns
+- Style drift
+
+Never rank funds solely by one-year performance.
+
+---
+
+# LAYER 22 — MACRO AGENT
+
+Track:
+
+- Fed
+- RBI
+- ECB
+- BOJ
+- Inflation
+- Employment
+- GDP
+- PMI
+- Credit
+- Liquidity
+- Treasury yields
+- Real yields
+- Yield curve
+- DXY
+- INR/USD
+- Oil
+- Gold
+- Copper
+
+Compare:
+
+```text
+Actual
+vs
+Consensus
+vs
+Previous
+vs
+Market Expectations
+```
+
+Do not use mechanical macro rules.
+
+Example:
+
+Never automatically assume:
+
+> Fed cut = stock market bullish.
+
+Evaluate:
+
+- Expected policy
+- Actual policy
+- Guidance
+- Dot plot
+- Nominal yields
+- Real yields
+- USD
+- Liquidity
+- Growth
+- Inflation
+
+---
+
+# LAYER 23 — GLOBAL / GEOPOLITICAL AGENT
+
+Monitor:
+
+- US-China
+- Russia-Europe
+- Middle East
+- India-China
+- Tariffs
+- Sanctions
+- Elections
+- Trade
+- Supply chains
+- Energy security
+
+Transmission model:
+
+```text
+Event
+ ↓
+Industry
+ ↓
+Supply chain
+ ↓
+Company
+ ↓
+Revenue / Cost
+ ↓
+EPS / FCF
+ ↓
+Valuation
+ ↓
+Portfolio impact
+```
+
+---
+
+# LAYER 24 — SECTOR & ROTATION AGENT
+
+Analyze:
+
+- Sector performance
+- Relative strength
+- Breadth
+- ETF flows
+- Institutional flows
+- Earnings revisions
+- Valuation
+- Leadership
+- Weak sectors
+- Rotation regime
+
+Timeframes:
+
+```text
+1D
+1W
+1M
+3M
+6M
+1Y
+```
+
+---
+
+# LAYER 25 — TECHNICAL AGENT
+
+Analyze:
+
+- Trend
+- Momentum
+- RSI
+- MACD
+- Moving averages
+- VWAP
+- Support
+- Resistance
+- Breakout
+- Breakdown
+- Volume
+- ATR
+- Relative strength
+- Breadth
+- Price structure
+
+Regime:
+
+```text
+STRONG_UPTREND
+WEAK_UPTREND
+SIDEWAYS
+WEAK_DOWNTREND
+STRONG_DOWNTREND
+```
+
+---
+
+# LAYER 26 — VALUATION AGENT
+
+Stocks:
+
+- P/E
+- Forward P/E
+- PEG
+- EV/EBITDA
+- EV/Sales
+- P/FCF
+- FCF yield
+- Historical multiples
+- Peer multiples
+- DCF
+- Growth-adjusted valuation
+
+ETF:
+
+- Weighted P/E
+- Weighted P/B
+- Earnings yield
+- FCF yield
+- Historical valuation
+
+Mutual fund:
+
+- Portfolio P/E
+- Portfolio P/B
+- Earnings yield
+- Growth
+- Category valuation
+
+Output:
+
+```text
+Bear Value
+Base Value
+Bull Value
+Fair Value Range
+Current Valuation
+Margin of Safety
+Expected Upside
+Expected Downside
+Entry Zone
+```
+
+---
+
+# LAYER 27 — RISK AGENT
+
+Analyze:
+
+- Concentration
+- Sector risk
+- Country risk
+- Currency risk
+- Factor risk
+- ETF overlap
+- Correlation
+- Volatility
+- Drawdown
+- Liquidity
+- Tail risk
+
+A security must not be evaluated in isolation.
+
+---
+
+# LAYER 28 — PORTFOLIO AGENT
+
+The Portfolio Agent must know:
+
+- Current holdings
+- Position sizes
+- Average cost
+- Current value
+- Portfolio allocation
+- Sector allocation
+- Country allocation
+- ETF exposure
+- Effective look-through exposure
+- Unrealized gain/loss
+- Risk concentration
+
+Every investment recommendation should consider portfolio impact.
+
+---
+
+# LAYER 29 — POSITION SIZING AGENT
+
+Determine appropriate allocation based on:
+
+- Conviction
+- Downside
+- Volatility
+- Correlation
+- Portfolio exposure
+- Liquidity
+- Investment horizon
+- Maximum acceptable risk
+
+Never recommend allocation simply because an asset is attractive.
+
+---
+
+# LAYER 30 — EVIDENCE ENGINE
+
+Every important claim should have:
+
+```text
+Claim
+Source
+Source Type
+Published Time
+Retrieved Time
+Supporting Data
+Freshness
+Reliability
+Confidence
+```
+
+The final report must allow the user to understand where important facts came from.
+
+---
+
+# LAYER 31 — CONFLICT ENGINE
+
+Example:
+
+```text
+Fundamental → Bullish
+Technical → Bullish
+Valuation → Expensive
+Macro → Negative
+```
+
+Do not simply average these.
+
+Detect the conflict.
+
+Then trigger targeted research.
+
+```text
+Conflict
+ ↓
+Research Planner
+ ↓
+Additional evidence
+ ↓
+Recalculate
+ ↓
+Resolve / retain uncertainty
+```
+
+---
+
+# LAYER 32 — DEVIL'S ADVOCATE
+
+Every meaningful BUY/ACCUMULATE recommendation must be challenged.
+
+Search for:
+
+- Earnings deterioration
+- Competitive threats
+- Excessive valuation
+- Regulation
+- Accounting risk
+- Insider selling
+- Weak cash flow
+- Macro sensitivity
+- Sector deterioration
+- Overoptimistic assumptions
+
+Question:
+
+> What would make this thesis wrong?
+
+---
+
+# LAYER 33 — RESEARCH AUDITOR
+
+Before final decision:
+
+Check:
+
+- Data freshness
+- Source reliability
+- Calculations
+- Evidence
+- Valuation
+- Assumptions
+- Portfolio impact
+- Bear case
+- Conflicts
+- Missing information
+
+If failed:
+
+```text
+RESEARCH REJECTED
+→
+TARGETED RESEARCH
+→
+AUDIT AGAIN
+```
+
+---
+
+# LAYER 34 — INVESTMENT COMMITTEE
+
+The Investment Committee is the final decision layer.
+
+Possible decisions:
+
+```text
+BUY
+ACCUMULATE
+HOLD
+WATCH
+AVOID
+SELL
+```
+
+It receives:
+
+- Market data
+- News
+- Fundamentals
+- ETF/MF analysis
+- Macro
+- Sector
+- Technicals
+- Valuation
+- Risk
+- Portfolio fit
+- Evidence
+- Conflicts
+- Devil's Advocate
+- Audit result
+- Confidence
+
+No individual agent can make the final investment decision.
+
+---
+
+# LAYER 35 — FINAL RESEARCH OUTPUT
+
+Every research report should contain:
+
+```text
+DECISION
+Confidence
+Investment Horizon
+
+THESIS
+
+CURRENT DATA STATUS
+
+KEY EVIDENCE
+
+VALUATION
+
+ENTRY ZONE
+
+CATALYSTS
+
+RISKS
+
+BEAR CASE
+
+TECHNICAL VIEW
+
+MACRO VIEW
+
+PORTFOLIO FIT
+
+EXPECTED UPSIDE
+
+EXPECTED DOWNSIDE
+
+WHAT WOULD CHANGE THE THESIS
+
+DATA SOURCES
+
+DATA FRESHNESS
+```
+
+---
+
+# LAYER 36 — GEMINI ROLE
+
+Gemini should be used as the reasoning and synthesis layer.
+
+Suitable tasks:
+
+- Qualitative reasoning
+- Research synthesis
+- Classification
+- Scenario analysis
+- Event interpretation
+- Thesis generation
+- Bear-case analysis
+- Report generation
+- Investment Committee reasoning
+
+But Gemini must NOT be treated as the source of current market truth.
+
+Current prices, financial values and other time-sensitive facts must come from validated data providers.
+
+Google AI Studio's current platform supports structured outputs, tools/function calling, agents and background execution through the Gemini ecosystem.
+
+---
+
+# LAYER 37 — GEMINI TOOL / FUNCTION ARCHITECTURE
+
+Instead of giving Gemini uncontrolled access to everything, expose structured tools.
+
+Examples:
+
+```text
+get_current_price()
+get_market_data()
+get_company_fundamentals()
+get_latest_news()
+get_etf_holdings()
+get_mutual_fund_data()
+get_macro_data()
+get_fx_rate()
+get_gold_price()
+get_treasury_yield()
+calculate_portfolio_overlap()
+calculate_valuation()
+calculate_risk()
+run_technical_analysis()
+run_research_agent()
+```
+
+Gemini decides when to call tools, while deterministic application code executes the actual calculations and data retrieval.
+
+Google's Gemini API supports function calling and structured tool workflows.
+
+---
+
+# LAYER 38 — LOCAL DETERMINISTIC COMPUTATION
+
+Do locally:
+
+- CAGR
+- Returns
+- Drawdown
+- Volatility
+- Correlation
+- Portfolio weights
+- ETF overlap
+- Look-through exposure
+- RSI
+- MACD
+- Moving averages
+- ATR
+- Valuation formulas
+- Position sizing
+- Risk calculations
+- Freshness calculations
+- Scenario calculations
+
+Do not ask the LLM to perform critical financial mathematics when deterministic code can do it.
+
+---
+
+# LAYER 39 — LOCAL DATABASE
+
+Use an Android-compatible local database.
+
+Preferred architecture:
+
+```text
+Room
++
+SQLite
+```
+
+Store locally:
+
+- Portfolio
+- Holdings
+- Watchlist
+- Securities
+- ETF data
+- Mutual funds
+- Validated market data
+- News
+- Research reports
+- Evidence
+- Agent executions
+- Theses
+- Alerts
+- Monitoring state
+- Historical decisions
+- Data provenance
+
+---
+
+# LAYER 40 — LOCAL CACHE
+
+Use local caching to:
+
+- Reduce repeated API calls
+- Reduce Gemini usage
+- Reduce network consumption
+- Improve responsiveness
+- Preserve validated historical research
+
+But cached data must retain freshness metadata.
+
+Cache ≠ permission to use stale data.
+
+---
+
+# LAYER 41 — API KEY SECURITY
+
+Do NOT hard-code API keys.
+
+For Gemini on Android, use Google's supported secure architecture such as Firebase AI Logic/App Check rather than embedding raw API credentials in the APK. Google specifically documents this approach for Android apps.
+
+For third-party APIs:
+
+- Use secure Android storage where appropriate
+- Never commit keys into source
+- Never display keys in UI
+- Never write keys to logs
+- Never send keys to Gemini as normal prompt content
+
+---
+
+# LAYER 42 — BACKGROUND EXECUTION
+
+Do not promise unlimited 24/7 execution.
+
+Android imposes background execution constraints.
+
+Use:
+
+- WorkManager
+- Scheduled refresh
+- Refresh-on-open
+- User-triggered research
+- Event-driven refresh
+- Notifications where appropriate
+
+For example:
+
+```text
+App opened
+ ↓
+Check data freshness
+ ↓
+Refresh required data
+ ↓
+Run research
+```
+
+And:
+
+```text
+Scheduled Android task
+ ↓
+Check portfolio/watchlist
+ ↓
+Retrieve permitted fresh data
+ ↓
+Trigger targeted research
+```
+
+---
+
+# LAYER 43 — RESOURCE MANAGEMENT
+
+The system runs on a phone.
+
+Therefore implement:
+
+- Agent queue
+- Concurrency limit
+- Timeouts
+- Retry limits
+- Cancellation
+- Memory protection
+- Battery awareness
+- Network awareness
+
+Do not execute 15 large agents simultaneously if that creates unnecessary CPU, memory or battery pressure.
+
+---
+
+# LAYER 44 — AGENT EXECUTION STATE
+
+Every agent should expose:
+
+```text
+QUEUED
+RUNNING
+WAITING
+COMPLETED
+FAILED
+CANCELLED
+RESEARCH_REQUIRED
+```
+
+The UI should display agent progress.
+
+Example:
+
+```text
+✓ Market Data
+✓ Fundamentals
+✓ News
+✓ Technical
+⟳ Valuation
+⟳ Risk
+○ Devil's Advocate
+○ Investment Committee
+```
+
+---
+
+# LAYER 45 — RESEARCH MEMORY
+
+Store historical decisions.
+
+Example:
+
+```text
+NVDA
+
+Previous Decision:
+ACCUMULATE
+
+Previous Fair Value:
+$XXX
+
+Current Decision:
+HOLD
+
+Change:
+Valuation increased faster than earnings estimates.
+
+Reason:
+Margin of safety declined.
+```
+
+This allows the application to explain:
+
+> What changed since my last analysis?
+
+---
+
+# LAYER 46 — MONITORING
+
+Monitor:
+
+- Portfolio holdings
+- Watchlist
+- Earnings
+- News
+- Valuation
+- Price movement
+- Sector regime
+- Macro regime
+- Geopolitical events
+- Investment thesis
+
+When a material event occurs:
+
+```text
+EVENT
+ ↓
+IMPACT ANALYSIS
+ ↓
+TARGETED RESEARCH
+ ↓
+COMPARE WITH PREVIOUS THESIS
+ ↓
+UPDATE DECISION
+```
+
+---
+
+# LAYER 47 — DATA HEALTH DASHBOARD
+
+Create a dedicated Data Health screen.
+
+Example:
+
+```text
+MARKET DATA        🟢 LIVE
+NEWS               🟢 FRESH
+FUNDAMENTALS       🟢 LATEST
+ETF DATA           🟢 FRESH
+MF DATA            🟢 LATEST
+MACRO              🟢 LATEST
+FX                 🟢 LIVE
+GOLD               🟢 LIVE
+GEOPOLITICAL       🟢 FRESH
+```
+
+Show:
+
+- Last update
+- Source
+- Freshness
+- Provider
+- Reliability
+- Errors
+- Missing data
+
+---
+
+# LAYER 48 — SYSTEM HEALTH
+
+Overall:
+
+```text
+GREEN
+YELLOW
+RED
+```
+
+GREEN:
+
+All critical data available.
+
+YELLOW:
+
+Some non-critical information unavailable.
+
+RED:
+
+Critical information unavailable.
+
+If RED affects the requested decision:
+
+```text
+CURRENT DATA UNAVAILABLE
+```
+
+must be prominently displayed.
+
+---
+
+# LAYER 49 — PORTFOLIO DASHBOARD
+
+Home screen should show:
+
+```text
+TOTAL PORTFOLIO
+
+Portfolio Value
+
+Today's Change
+
+Overall Gain/Loss
+
+India Exposure
+US Exposure
+Other Exposure
+
+Equity
+ETF
+MF
+Cash
+
+Technology Exposure
+Financial Exposure
+Healthcare Exposure
+Other Sectors
+
+Top 10 Effective Exposures
+
+Portfolio Risk
+
+Concentration Risk
+
+ETF Overlap
+```
+
+---
+
+# LAYER 50 — UNIVERSAL RESEARCH BOX
+
+Main input:
+
+> What do you want to research?
+
+Examples:
+
+```text
+Analyze NVDA
+
+Should I buy QQQM now?
+
+Compare VOO vs QQQM
+
+Find undervalued Indian large caps
+
+Analyze my portfolio overlap
+
+Why is gold falling today?
+
+Should I add more GOOGL?
+
+Which ETF reduces my technology exposure?
+
+Analyze US market valuation.
+
+Find global diversification opportunities.
+```
+
+The Research Planner should automatically determine the required agent workflow.
+
+---
+
+# LAYER 51 — DECISION EXPLAINABILITY
+
+Do not expose private model chain-of-thought.
+
+Instead show:
+
+## Decision Evidence
+
+```text
+1. Earnings growth remains strong.
+2. Valuation is above historical average.
+3. Technical trend is positive.
+4. Portfolio already has high technology exposure.
+5. Devil's Advocate identified valuation risk.
+6. Margin of safety is insufficient.
+```
+
+Then:
+
+```text
+FINAL DECISION:
+ACCUMULATE
+
+CONFIDENCE:
+78%
+
+ENTRY ZONE:
+$XXX–$XXX
+```
+
+---
+
+# LAYER 52 — NO FAKE DATA
+
+Development mock data is allowed only when explicitly labelled:
+
+```text
+MOCK DATA
+```
+
+Production research must never contain:
+
+- Mock market prices
+- Fake financial statements
+- Fake news
+- Fake valuation data
+- Fake API responses
+
+---
+
+# LAYER 53 — FAILURE TRANSPARENCY
+
+If a provider fails:
+
+```text
+Market Data Provider A
+FAILED
+
+Provider B
+SUCCESS
+
+Validated data:
+YES
+```
+
+If both fail:
+
+```text
+MARKET DATA:
+CURRENT DATA UNAVAILABLE
+```
+
+Do not hide provider failures.
+
+---
+
+# LAYER 54 — CONFLICT TRANSPARENCY
+
+If agents disagree:
+
+```text
+CONFLICT DETECTED
+
+Fundamental:
+BULLISH
+
+Technical:
+BULLISH
+
+Valuation:
+BEARISH
+
+Macro:
+NEUTRAL
+```
+
+Then show:
+
+```text
+Additional research required.
+```
+
+---
+
+# LAYER 55 — RESEARCH QUALITY GATE
+
+No final investment decision until:
+
+```text
+Data Quality = PASS
+Freshness = PASS
+Evidence = PASS
+Conflict Review = PASS
+Valuation = PASS
+Risk = PASS
+Devil's Advocate = PASS
+Audit = PASS
+```
+
+If any critical gate fails:
+
+```text
+RESEARCH INCOMPLETE
+```
+
+---
+
+# LAYER 56 — TESTING
+
+Every phase must have:
+
+- Unit tests
+- Integration tests
+- Agent tests
+- Data tests
+- Freshness tests
+- Failure tests
+- Network tests
+- Security tests
+- Android tests
+- Performance tests
+
+Test cases must include:
+
+### Stale Data
+
+Expected:
+
+```text
+STALE
+```
+
+and current decision blocked.
+
+### Missing Data
+
+Expected:
+
+```text
+CURRENT DATA UNAVAILABLE
+```
+
+### Provider Conflict
+
+Expected:
+
+```text
+CONFLICT DETECTED
+```
+
+### ETF Overlap
+
+Expected:
+
+```text
+Effective exposure calculated.
+```
+
+### Network Failure
+
+Expected:
+
+```text
+Network unavailable.
+Current data cannot be verified.
+```
+
+---
+
+# LAYER 57 — BUILD PHASES
+
+Do NOT ask Google AI Studio to build everything at once.
+
+## PHASE 0
+
+Architecture analysis only.
+
+## PHASE 1
+
+Android foundation.
+
+## PHASE 2
+
+Local database and Data Control Tower.
+
+## PHASE 3
+
+Market + News + Fundamental agents.
+
+## PHASE 4
+
+ETF + Mutual Fund + Macro + Sector + Global.
+
+## PHASE 5
+
+Valuation + Risk + Portfolio + Conflict + Devil's Advocate + Auditor + Investment Committee.
+
+## PHASE 6
+
+Monitoring + alerts + research memory + autonomous re-research.
+
+---
+
+# LAYER 58 — PHASE 0 INSTRUCTION TO GOOGLE AI STUDIO
+
+Before writing the complete application, analyze this specification.
+
+Do NOT implement the entire application.
+
+First produce:
+
+1. Android architecture
+2. Kotlin package structure
+3. Jetpack Compose UI architecture
+4. Agent architecture
+5. Agent interfaces
+6. Agent orchestration model
+7. Data Control Tower architecture
+8. Provider abstraction
+9. Local database schema
+10. Room entities
+11. Repository architecture
+12. Freshness engine
+13. Evidence model
+14. Conflict model
+15. Portfolio model
+16. ETF look-through architecture
+17. Gemini integration architecture
+18. Secure API architecture
+19. Background execution architecture
+20. WorkManager strategy
+21. Resource management
+22. Error handling
+23. Provider failover
+24. Testing strategy
+25. APK build strategy
+26. Security strategy
+27. Implementation phases
+
+Then STOP.
+
+Do not implement Phase 1 until explicitly instructed:
+
+**IMPLEMENT PHASE 1**
+
+---
+
+# LAYER 59 — DO NOT SIMPLIFY
+
+Do not convert this architecture into:
+
+```text
+User
+ ↓
+Gemini
+ ↓
+Answer
+```
+
+The application must retain:
+
+```text
+Master Agent
+Research Planner
+Data Control Tower
+Freshness Engine
+Market Agent
+News Agent
+Fundamental Agent
+ETF Agent
+Mutual Fund Agent
+Macro Agent
+Global Agent
+Sector Agent
+Technical Agent
+Valuation Agent
+Risk Agent
+Portfolio Agent
+Evidence Engine
+Conflict Engine
+Devil's Advocate
+Research Auditor
+Investment Committee
+Monitoring Engine
+```
+
+These must be implemented as separable software components with explicit contracts, even if several components initially run inside the same Android process.
+
+---
+
+# LAYER 60 — IMPORTANT DISTINCTION
+
+"Multi-agent" does NOT mean every agent needs a separate server or separate AI model.
+
+The agents can run locally as independent logical components:
+
+```text
+Agent Interface
+      ↓
+Agent Implementation
+      ↓
+Agent Input
+      ↓
+Agent Processing
+      ↓
+Agent Output
+```
+
+Gemini can be invoked selectively by agents that need reasoning.
+
+Deterministic agents should use local code.
+
+This reduces:
+
+- API cost
+- latency
+- unnecessary model calls
+- battery usage
+- hallucination risk
+
+---
+
+# LAYER 61 — MODEL USAGE STRATEGY
+
+Do not call Gemini for everything.
+
+### Deterministic local code
+
+Use for:
+
+- Calculations
+- Indicators
+- Portfolio weights
+- Overlap
+- Freshness
+- Risk formulas
+- Valuation formulas
+- Data validation
+
+### Gemini
+
+Use for:
+
+- Reasoning
+- Synthesis
+- Interpretation
+- Scenario analysis
+- News impact
+- Thesis generation
+- Bear case
+- Committee reasoning
+
+This creates a hybrid intelligence system rather than an expensive LLM wrapper.
+
+---
+
+# LAYER 62 — COST CONTROL
+
+The system should minimize unnecessary AI calls.
+
+Use:
+
+- Local calculations
+- Local cache
+- Research reuse
+- Targeted agent execution
+- Structured outputs
+- Parallel calls when appropriate
+- Research stopping logic
+- Event-driven re-research
+
+Do not rerun every agent every time the user asks a related question.
+
+---
+
+# LAYER 63 — RESEARCH STOPPING LOGIC
+
+Stop research when:
+
+- Required evidence is sufficient
+- Data quality passes
+- No unresolved critical conflict exists
+- Confidence is sufficient
+- Additional research has low expected value
+
+Continue research when:
+
+- Critical data is missing
+- Agents materially disagree
+- Valuation is uncertain
+- Portfolio impact is unclear
+- Devil's Advocate identifies a major unresolved risk
+
+---
+
+# LAYER 64 — PERSONAL PORTFOLIO INTELLIGENCE
+
+The application must understand the user's existing portfolio.
+
+Example:
+
+If the user owns:
+
+```text
+QQQM
+NVDA
+MSFT
+GOOGL
+AMZN
+```
+
+and asks:
+
+> Should I buy another technology ETF?
+
+the system must calculate:
+
+```text
+Current technology exposure
++
+ETF look-through
++
+new ETF exposure
++
+incremental technology exposure
++
+overlap
++
+concentration risk
+```
+
+Then determine whether the new investment actually improves diversification.
+
+---
+
+# LAYER 65 — INVESTMENT PHILOSOPHY
+
+Priority order:
+
+```text
+1. Capital Preservation
+2. Data Accuracy
+3. Data Freshness
+4. Business Quality
+5. Balance Sheet Strength
+6. Sustainable Earnings / FCF Growth
+7. Competitive Advantage
+8. Valuation
+9. Market / Sector Confirmation
+10. Downside Protection
+11. Portfolio Fit
+12. Long-Term Appreciation
+```
+
+Do not sacrifice data integrity for speed.
+
+Do not sacrifice capital preservation for an attractive narrative.
+
+---
+
+# LAYER 66 — FINAL SYSTEM BEHAVIOR
+
+The application should behave like this:
+
+```text
+USER
+ ↓
+"Analyze NVDA"
+ ↓
+MASTER AGENT
+ ↓
+RESEARCH PLANNER
+ ↓
+CHECK PORTFOLIO
+ ↓
+CHECK REQUIRED DATA
+ ↓
+DATA CONTROL TOWER
+ ↓
+FRESH DATA
+ ↓
+PARALLEL RESEARCH
+ ├── Market
+ ├── Fundamentals
+ ├── News
+ ├── Technical
+ ├── Sector
+ └── Macro
+ ↓
+EVIDENCE
+ ↓
+VALUATION
+ ↓
+RISK
+ ↓
+PORTFOLIO FIT
+ ↓
+CONFLICT CHECK
+ ↓
+DEVIL'S ADVOCATE
+ ↓
+AUDITOR
+ ↓
+INVESTMENT COMMITTEE
+ ↓
+FINAL DECISION
+ ↓
+STORE LOCALLY
+ ↓
+MONITOR
+```
+
+---
+
+# LAYER 67 — FINAL DECISION FORMAT
+
+Example:
+
+```text
+NVDA
+
+DECISION:
+ACCUMULATE
+
+CONFIDENCE:
+82%
+
+HORIZON:
+3–5 YEARS
+
+CURRENT DATA:
+LIVE / FRESH
+
+THESIS:
+Strong earnings growth and competitive positioning support
+long-term appreciation, but valuation limits the margin of safety.
+
+VALUATION:
+Fair Value: $XXX–$XXX
+
+ENTRY ZONE:
+$XXX–$XXX
+
+UPSIDE:
+XX%
+
+DOWNSIDE:
+XX%
+
+CATALYSTS:
+...
+
+RISKS:
+...
+
+BEAR CASE:
+...
+
+PORTFOLIO IMPACT:
+Increases existing technology concentration.
+
+WHAT WOULD CHANGE THE THESIS:
+...
+
+DATA HEALTH:
+GREEN
+```
+
+---
+
+# LAYER 68 — NON-NEGOTIABLE RULES
+
+1. Android-first.
+2. Kotlin + Jetpack Compose.
+3. Personal single-user application.
+4. Local application runtime.
+5. Internet-connected operation.
+6. No custom public backend.
+7. No VPS.
+8. No domain.
+9. No public IP.
+10. No requirement for Cloud Run.
+11. Use Android-compatible local persistence.
+12. Use secure Gemini integration appropriate for Android.
+13. Real multi-agent architecture.
+14. Master Agent must orchestrate.
+15. Research Planner must plan.
+16. Data Control Tower must centralize data.
+17. Freshness must be data-type specific.
+18. No stale data presented as current.
+19. Current-data failure must produce CURRENT DATA UNAVAILABLE.
+20. Never fabricate financial data.
+21. Never fabricate citations.
+22. Never use Gemini's internal knowledge as current market truth.
+23. Deterministic calculations should be local.
+24. ETF look-through is mandatory.
+25. Portfolio-aware analysis is mandatory.
+26. Conflict detection is mandatory.
+27. Devil's Advocate is mandatory.
+28. Research Auditor is mandatory.
+29. Investment Committee is mandatory.
+30. Monitoring is mandatory.
+31. Research memory is mandatory.
+32. Provider failover must be supported.
+33. Agent execution must be resource-aware.
+34. Android background restrictions must be respected.
+35. Do not build the complete system in one step.
+36. Do not simplify the architecture to a single chatbot.
+37. Do not remove major capabilities.
+38. If something cannot yet be implemented, create a documented interface/stub rather than silently removing it.
+39. Every important financial conclusion must be evidence-backed.
+40. The system must prioritize reliability over speed.
+
+---
+
+# LAYER 69 — FIRST COMMAND
+
+After reading this entire specification:
+
+## DO NOT BUILD THE COMPLETE APPLICATION YET.
+
+Perform **PHASE 0 — ARCHITECTURE ANALYSIS ONLY**.
+
+Return:
+
+- Proposed Android architecture
+- Complete package structure
+- Agent architecture
+- Agent contracts
+- Data model
+- Room/SQLite schema
+- Data Control Tower design
+- Freshness Engine
+- Provider architecture
+- Gemini architecture
+- Secure credential architecture
+- Portfolio architecture
+- ETF look-through architecture
+- Research orchestration
+- Background execution
+- WorkManager strategy
+- Resource controls
+- Testing strategy
+- Security model
+- Implementation roadmap
+- Technical risks
+- Mitigations
+
+Then STOP.
+
+Wait for:
+
+# IMPLEMENT PHASE 1
+
+Do not begin Phase 1 automatically.
+
+---
+
+# LAYER 70 — FINAL PRODUCT PRINCIPLE
+
+The finished application should be a:
+
+## PRIVATE, LOCAL, ONLINE-FIRST, MULTI-AGENT INVESTMENT RESEARCH ORGANIZATION
+
+running on the user's Android phone.
+
+The phone provides:
+
+```text
+Application Runtime
+Agent Runtime
+Portfolio
+Database
+Research Memory
+Calculations
+Risk Engine
+Valuation Engine
+Monitoring
+```
+
+The internet provides:
+
+```text
+Fresh Market Data
+News
+Filings
+Macro Data
+ETF Data
+Mutual Fund Data
+Global Information
+Geopolitical Information
+Gemini Reasoning
+```
+
+The intelligence layer combines them through:
+
+```text
+FRESH VERIFIED DATA
++
+LOCAL DETERMINISTIC COMPUTATION
++
+MULTI-AGENT RESEARCH
++
+EVIDENCE
++
+CONFLICT RESOLUTION
++
+DEVIL'S ADVOCATE
++
+AUDIT
++
+PORTFOLIO LOOK-THROUGH
++
+INVESTMENT COMMITTEE
++
+CONTINUOUS MONITORING
+```
+
+The objective is not to generate a quick AI answer.
+
+The objective is to produce the **most reliable, evidence-backed, portfolio-aware investment research possible using the freshest verifiable information available**, while keeping the application itself under the user's local control.

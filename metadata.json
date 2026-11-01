@@ -1,0 +1,8 @@
+{
+  "name": "Complete Stock AI agentic filter and analysis",
+  "description": "Institutional-grade multi-agent investment intelligence and portfolio research system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
